@@ -9,7 +9,7 @@ import com.caronte.rest.enums.CharsetType;
 import com.caronte.rest.enums.ContentParamType;
 import com.caronte.rest.enums.ContentType;
 import com.caronte.rest.enums.MethodType;
-import com.masnegocio.landingpage.ontrollers.OperationsController;
+import com.masnegocio.landingpage.controllers.OperationsController;
 
 @RESTController("/landing")
 public class Operations
