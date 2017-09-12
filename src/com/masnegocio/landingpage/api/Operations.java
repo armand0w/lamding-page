@@ -90,6 +90,12 @@ public class Operations
         System.out.println( content );
         System.out.println( productoMN );
 
-        return new JSONObject();
+        JSONObject response = new JSONObject();
+        response.addPair("continue", true);
+        response.addPair("message", "Puede continuar");
+
+        Thread.sleep(1000);
+
+        return response;
     }
 }
