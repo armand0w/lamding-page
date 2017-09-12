@@ -213,12 +213,39 @@ public class OperationsController
                                     {
                                         try
                                         {
-                                            String script = new String( Files.readAllBytes( Paths.get( f.getPath() ) ) );
-                                            connSchema.createStatement().execute( script );
+                                            String script = new String( Files.readAllBytes( Paths.get( f.getPath() ) ), "UTF-8" );
+
+                                            if ( (script.toUpperCase().contains("CREATE TABLE")
+                                                    && script.toUpperCase().contains("INSERT INTO"))
+                                                    && !script.toUpperCase().contains("CREATE PROCEDURE") )
+                                            {
+                                                String[] stm = script.split(";");
+                                                for ( String s: stm )
+                                                {
+                                                    try
+                                                    {
+                                                        if ( s.trim().length() > 0 )
+                                                        {
+                                                            connSchema.createStatement().execute( s.trim() );
+                                                        }
+                                                    }
+                                                    catch (Exception sql)
+                                                    {
+                                                        LOGGER.error("====================================================================");
+                                                        LOGGER.error("Error al ejecutar INSERT: " + sql.getMessage());
+                                                        LOGGER.error(f.getPath());
+
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                connSchema.createStatement().execute( script );
+                                            }
                                         }
                                         catch (Exception ex)
                                         {
-                                            LOGGER.error(this.getClass().getName(), ex);
+                                            LOGGER.error("Error al ejecutar SQL: " + ex.getMessage());
                                         }
                                     }
                                 }
